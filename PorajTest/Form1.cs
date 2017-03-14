@@ -36,6 +36,8 @@ namespace PorajTest
             tblMode = new TableMode();
             tblMode.isEditMode = false;
             tblMode.tableName = "klienci";
+
+            dataGridViewKlienci.AllowUserToAddRows = false;
         }
 
         public void RefreshKlientGridView(string tableName)
@@ -152,6 +154,7 @@ namespace PorajTest
 
                 dataGridViewKlienci.CellDoubleClick -= new DataGridViewCellEventHandler(this.SelectedKlient);
                 dataGridViewKlienci.ReadOnly = false;
+                dataGridViewKlienci.AllowUserToAddRows = true;
 
                 tblMode.isEditMode = false;
 
@@ -167,6 +170,7 @@ namespace PorajTest
 
                 dataGridViewKlienci.CellDoubleClick += new DataGridViewCellEventHandler(this.SelectedKlient);
                 dataGridViewKlienci.ReadOnly = true;
+                dataGridViewKlienci.AllowUserToAddRows = false;
 
                 buttonMode.Text = "Edycja";
 

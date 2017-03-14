@@ -26,6 +26,9 @@ namespace PorajTest
         private DateTimePicker dtpKonc;
         private int[] dateColumns = { 8, 9 };//{ 10, 11 };
         private Dictionary<int, string> kursyNazwaDict;
+
+        DataGridViewComboBoxColumn comboBoxColumnKursyNazwa;
+        DataGridViewComboBoxColumn comboBoxColumnDniTygodnia;
         public KlientDetailsForm(int id, string imie, string nazwisko, string email, string telefon, string ean)
         {
             InitializeComponent();
@@ -40,8 +43,8 @@ namespace PorajTest
 
             kursyNazwaList = new List<string>();
 
-            DataGridViewComboBoxColumn comboBoxColumnKursyNazwa = PobierzKursyNazwa();
-            DataGridViewComboBoxColumn comboBoxColumnDniTygodnia = new DataGridViewComboBoxColumn();
+            comboBoxColumnKursyNazwa = PobierzKursyNazwa();
+            comboBoxColumnDniTygodnia = new DataGridViewComboBoxColumn();
             comboBoxColumnDniTygodnia.Items.AddRange(dniTygodnia);
             comboBoxColumnDniTygodnia.Name = "Dzień tygodnia";
             comboBoxColumnDniTygodnia.DataPropertyName = "Dzień tygodnia";
@@ -51,6 +54,7 @@ namespace PorajTest
             SetDatePicker(ref dtpRozp);
             SetDatePicker(ref dtpKonc);
 
+            dataGridViewKlientKursy.AllowUserToAddRows = false;
             Debug.WriteLine("gridview column count: "+dataGridViewKlientKursy.Columns.Count);
         }
 
@@ -79,7 +83,7 @@ namespace PorajTest
                 comboBoxColumn.DataPropertyName = "Grupa";
 
                 kursyNazwaDict = ds.Tables[0].AsEnumerable().Select(r => r).ToDictionary(r=>r.Field<int>("id"), r=>r.Field<string>("nazwa"));
-                Debug.WriteLine("kursyNazwDict: "+ kursyNazwaDict.FirstOrDefault(x=> x.Value=="Salsa").Key);
+                Debug.WriteLine("kursyNazwDict: "+ kursyNazwaDict.FirstOrDefault(x=> x.Value=="Zumba").Key);
             }
 
             return comboBoxColumn;
@@ -129,14 +133,16 @@ namespace PorajTest
 
                     Debug.WriteLine("kursy idx: " + dataGridViewKlientKursy.Columns.Count);
 
-                    DataGridViewButtonColumn btnColumn = new DataGridViewButtonColumn();
-                    btnColumn.Name = "Zapisz";
-                    btnColumn.HeaderText = "Zapisz";
-                    btnColumn.Text = "Zapisz";
-                    btnColumn.UseColumnTextForButtonValue = true;
+                    Utils.AddButtonToDataGridView("Zapisz", "Zapisz", 100, ref dataGridViewKlientKursy);
+                    Utils.AddButtonToDataGridView("Usuń", "Usuń", 100, ref dataGridViewKlientKursy);
+                    //DataGridViewButtonColumn btnColumn = new DataGridViewButtonColumn();
+                    //btnColumn.Name = "Zapisz";
+                    //btnColumn.HeaderText = "Zapisz";
+                    //btnColumn.Text = "Zapisz";
+                    //btnColumn.UseColumnTextForButtonValue = true;
 
                     //Debug.WriteLine("btnColumn idx: " + dataGridViewKlientKursy.Columns.Count);
-                    dataGridViewKlientKursy.Columns.Insert(dataGridViewKlientKursy.Columns.Count, btnColumn);
+                    //dataGridViewKlientKursy.Columns.Insert(dataGridViewKlientKursy.Columns.Count, btnColumn);
                     dataGridViewKlientKursy.Columns["Ilość wejść"].DisplayIndex = 6;
                     dataGridViewKlientKursy.Columns["Początek karnetu"].DisplayIndex = 7;
                     dataGridViewKlientKursy.Columns["Koniec karnetu"].DisplayIndex = 8;
@@ -149,19 +155,48 @@ namespace PorajTest
             }
         }
 
-        private void DodajKurs()
-        {
-            //form dodaj kurs klienta
-        }
-
         private void buttonDodajKurs_Click(object sender, EventArgs e)
         {
+            dataGridViewKlientKursy.AllowUserToAddRows = true;
 
+            //DataGridViewRow row = dataGridViewKlientKursy.Rows[dataGridViewKlientKursy.Rows.Count -1];
+            //row.Cells["Nazwisko"].Value = nazwisko;
+            //row.Cells["Imię"].Value = imie;
+            //row.Cells["Email"].Value = email;
+            //row.Cells["Telefon"].Value = telefon;
+            
+            //dataGridViewKlientKursy.NotifyCurrentCellDirty(true);
+            //dataGridViewKlientKursy.BeginEdit(true);
+            //dataGridViewKlientKursy.EndEdit();
+        }
+
+        private void RemoveKlientKursy(int klient_id, int kurs_id)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(Utils.conncection_string);
+                conn.Open();
+                MySqlCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "DELETE FROM klienci_kursy WHERE klient_id = @klient_id AND kurs_id = @kurs_id";
+                cmd.Parameters.AddWithValue("@klient_id", klient_id);
+                cmd.Parameters.AddWithValue("@kurs_id", kurs_id);
+                int resp = cmd.ExecuteNonQuery();
+                Debug.WriteLine("resp: " + resp);
+                conn.Close();
+                //mainForm.RefreshKlientGridView("klienci");
+                this.Close();
+            }
+            catch (MySqlException e)
+            {
+                Debug.WriteLine("SaveKlientKursy, MySqlException");
+                Debug.WriteLine(e.ToString());
+            }
         }
 
         private void SaveKlientKursy(int klient_id, int kurs_id, string dzien, int ilosc_wejsc, DateTime pocz_karn, DateTime kon_karn, float cena)
         {
             Debug.WriteLine("SaveKlientKursy");
+            Debug.WriteLine("kurs_id: "+ kurs_id);
             try
             {
                 MySqlConnection conn = new MySqlConnection(Utils.conncection_string);
@@ -268,12 +303,21 @@ namespace PorajTest
                     && int.TryParse(senderGrid.Rows[e.RowIndex].Cells["Ilość wejść"].Value.ToString(), out ilosc_wejsc) && float.TryParse(senderGrid.Rows[e.RowIndex].Cells["Cena"].Value.ToString(), out cena)
                     && DateTime.TryParse(senderGrid.Rows[e.RowIndex].Cells["Początek karnetu"].Value.ToString(), out poczatekKarnetu) && DateTime.TryParse(senderGrid.Rows[e.RowIndex].Cells["Koniec karnetu"].Value.ToString(), out koniecKarnetu))
                 {
-                    int kursId = kursyNazwaDict.FirstOrDefault(x => x.Value == "Salsa").Key;
+                    int kursId = kursyNazwaDict.FirstOrDefault(x => x.Value == senderGrid.Rows[e.RowIndex].Cells["Grupa"].Value.ToString()).Key;
                     string dzien = senderGrid.Rows[e.RowIndex].Cells["Dzień Tygodnia"].Value.ToString();
 
                     Debug.WriteLine("konieckarn: "+ koniecKarnetu);
 
-                    SaveKlientKursy(id, kursId, dzien, ilosc_wejsc, poczatekKarnetu, koniecKarnetu, cena);
+                    DataGridViewButtonColumn btnCol = senderGrid.Columns[e.ColumnIndex] as DataGridViewButtonColumn;
+                    if (btnCol.Text.Equals("Zapisz"))
+                    {
+                        SaveKlientKursy(id, kursId, dzien, ilosc_wejsc, poczatekKarnetu, koniecKarnetu, cena);
+                    }
+                    else if (btnCol.Text.Equals("Usuń"))
+                    {
+                        RemoveKlientKursy(id, kursId);
+                        PobierzKursyKlienta(comboBoxColumnKursyNazwa, comboBoxColumnDniTygodnia);
+                    }
                 }
             }
         }
@@ -292,16 +336,25 @@ namespace PorajTest
             upc.CountryCode = "590";//"12";
             upc.ManufacturerCode = "34567";//"34567";
             upc.ProductCode = eanProductCode;//"0001";//"89012";
-            upc.Scale = 2f;//(float)Convert.ToDecimal(cboScale.Items[cboScale.SelectedIndex]);
+            upc.Scale = 1.5f;//(float)Convert.ToDecimal(cboScale.Items[cboScale.SelectedIndex]);
 
             upc.DrawEan13Barcode(g, new Point(0, 0));
 
+            pictureBoxEan.BackColor = Color.White;
             g.Dispose();
         }
 
         private void KlientDetailsForm_Paint(object sender, PaintEventArgs e)
         {
             DrawEan13(ean);
+        }
+
+        private void dataGridViewKlientKursy_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
+        {
+            e.Row.Cells["Nazwisko"].Value = nazwisko;
+            e.Row.Cells["Imię"].Value = imie;
+            e.Row.Cells["Email"].Value = email;
+            e.Row.Cells["Telefon"].Value = telefon;
         }
     }
 }

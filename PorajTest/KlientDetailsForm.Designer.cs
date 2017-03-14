@@ -56,6 +56,7 @@
             this.dataGridViewKlientKursy.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridViewKlientKursy_CellBeginEdit);
             this.dataGridViewKlientKursy.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewKlientKursy_CellContentClick);
             this.dataGridViewKlientKursy.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewKlientKursy_CellEndEdit);
+            this.dataGridViewKlientKursy.DefaultValuesNeeded += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataGridViewKlientKursy_DefaultValuesNeeded);
             // 
             // buttonDodajKurs
             // 
