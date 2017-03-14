@@ -1,0 +1,13 @@
+D:\Visual Studio Projects\PorajTest\PorajTest\bin\Debug\PorajTest.exe.config
+D:\Visual Studio Projects\PorajTest\PorajTest\bin\Debug\PorajTest.exe
+D:\Visual Studio Projects\PorajTest\PorajTest\bin\Debug\PorajTest.pdb
+D:\Visual Studio Projects\PorajTest\PorajTest\bin\Debug\MySql.Data.dll
+D:\Visual Studio Projects\PorajTest\PorajTest\obj\Debug\PorajTest.csprojResolveAssemblyReference.cache
+D:\Visual Studio Projects\PorajTest\PorajTest\obj\Debug\PorajTest.Form1.resources
+D:\Visual Studio Projects\PorajTest\PorajTest\obj\Debug\PorajTest.Properties.Resources.resources
+D:\Visual Studio Projects\PorajTest\PorajTest\obj\Debug\PorajTest.csproj.GenerateResource.Cache
+D:\Visual Studio Projects\PorajTest\PorajTest\obj\Debug\PorajTest.exe
+D:\Visual Studio Projects\PorajTest\PorajTest\obj\Debug\PorajTest.pdb
+D:\Visual Studio Projects\PorajTest\PorajTest\obj\Debug\PorajTest.DodajKlientaForm.resources
+D:\Visual Studio Projects\PorajTest\PorajTest\obj\Debug\PorajTest.DodajKursForm.resources
+D:\Visual Studio Projects\PorajTest\PorajTest\obj\Debug\PorajTest.KlientDetailsForm.resources
