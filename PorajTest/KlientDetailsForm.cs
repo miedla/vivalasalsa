@@ -24,7 +24,7 @@ namespace PorajTest
         private string[] dniTygodnia = { "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota" };
         private DateTimePicker dtpRozp;
         private DateTimePicker dtpKonc;
-        private int[] dateColumns = { 8, 9 };//{ 10, 11 };
+        private int[] dateColumns = { 9, 10 };//{ 10, 11 };
         private Dictionary<int, string> kursyNazwaDict;
 
         DataGridViewComboBoxColumn comboBoxColumnKursyNazwa;
@@ -356,5 +356,6 @@ namespace PorajTest
             e.Row.Cells["Email"].Value = email;
             e.Row.Cells["Telefon"].Value = telefon;
         }
+
     }
 }

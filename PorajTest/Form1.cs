@@ -145,25 +145,23 @@ namespace PorajTest
             new DodajKursForm(this).Show();
         }
 
-        private void buttonMode_Click(object sender, EventArgs e)
+        private void EdycjaMode()
         {
-            if (buttonMode.Text.Equals("Edycja"))
-            {
-                Utils.AddButtonToDataGridView("Zmień", "Zapisz", 100, ref dataGridViewKlienci);
-                Utils.AddButtonToDataGridView("Usuń", "Usuń", 100, ref dataGridViewKlienci);
+            Utils.AddButtonToDataGridView("Zmień", "Zapisz", 100, ref dataGridViewKlienci);
+            Utils.AddButtonToDataGridView("Usuń", "Usuń", 100, ref dataGridViewKlienci);
 
-                dataGridViewKlienci.CellDoubleClick -= new DataGridViewCellEventHandler(this.SelectedKlient);
-                dataGridViewKlienci.ReadOnly = false;
-                dataGridViewKlienci.AllowUserToAddRows = true;
+            dataGridViewKlienci.CellDoubleClick -= new DataGridViewCellEventHandler(this.SelectedKlient);
+            dataGridViewKlienci.ReadOnly = false;
+            dataGridViewKlienci.AllowUserToAddRows = true;
 
-                tblMode.isEditMode = false;
+            tblMode.isEditMode = false;
 
-                buttonMode.Text = "Wyświetlanie";
+            buttonMode.Text = "Wyświetlanie";
+        }
 
-                return;
-            }
-
-            if (buttonMode.Text.Equals("Wyświetlanie"))
+        private void WyswietlanieMode()
+        {
+            try
             {
                 dataGridViewKlienci.Columns.RemoveAt(dataGridViewKlienci.Columns.IndexOf(dataGridViewKlienci.Columns["Zmień"]));
                 dataGridViewKlienci.Columns.RemoveAt(dataGridViewKlienci.Columns.IndexOf(dataGridViewKlienci.Columns["Usuń"]));
@@ -173,6 +171,44 @@ namespace PorajTest
                 dataGridViewKlienci.AllowUserToAddRows = false;
 
                 buttonMode.Text = "Edycja";
+            }catch(Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
+        }
+
+        private void buttonMode_Click(object sender, EventArgs e)
+        {
+            if (buttonMode.Text.Equals("Edycja") && !tblMode.tableName.Equals("klienci_kursy"))
+            {
+                //Utils.AddButtonToDataGridView("Zmień", "Zapisz", 100, ref dataGridViewKlienci);
+                //Utils.AddButtonToDataGridView("Usuń", "Usuń", 100, ref dataGridViewKlienci);
+
+                //dataGridViewKlienci.CellDoubleClick -= new DataGridViewCellEventHandler(this.SelectedKlient);
+                //dataGridViewKlienci.ReadOnly = false;
+                //dataGridViewKlienci.AllowUserToAddRows = true;
+
+                //tblMode.isEditMode = false;
+
+                //buttonMode.Text = "Wyświetlanie";
+
+                EdycjaMode();
+
+                return;
+            }
+
+            if (buttonMode.Text.Equals("Wyświetlanie"))
+            {
+                //dataGridViewKlienci.Columns.RemoveAt(dataGridViewKlienci.Columns.IndexOf(dataGridViewKlienci.Columns["Zmień"]));
+                //dataGridViewKlienci.Columns.RemoveAt(dataGridViewKlienci.Columns.IndexOf(dataGridViewKlienci.Columns["Usuń"]));
+
+                //dataGridViewKlienci.CellDoubleClick += new DataGridViewCellEventHandler(this.SelectedKlient);
+                //dataGridViewKlienci.ReadOnly = true;
+                //dataGridViewKlienci.AllowUserToAddRows = false;
+
+                //buttonMode.Text = "Edycja";
+
+                WyswietlanieMode();
 
                 return;
             }
@@ -187,13 +223,10 @@ namespace PorajTest
         {
             RefreshKlientGridView("klienci_kursy");
             tblMode.tableName = "klienci_kursy";
-            if (dataGridViewKlienci.Columns["Zmień"] != null)
-            {
-                dataGridViewKlienci.Columns["Zmień"].DisplayIndex = dataGridViewKlienci.Columns.Count - 1;
-                dataGridViewKlienci.Columns["Zmień"].Width = 100;
 
-                dataGridViewKlienci.Columns["Usuń"].DisplayIndex = dataGridViewKlienci.Columns.Count - 1;
-                dataGridViewKlienci.Columns["Usuń"].Width = 100;
+            if (!tblMode.isEditMode)
+            {
+                WyswietlanieMode();
             }
         }
 
@@ -255,6 +288,7 @@ namespace PorajTest
                         {
                             Debug.WriteLine("Dodaj klienta");
                             Utils.DodajKlienta(ean, imie, nazwisko, email, telefon);
+                            RefreshKlientGridView(tblMode.tableName);
                         }else if (btnCol.Text.Equals("Usuń")) //&& int.TryParse(senderGrid.Rows[e.RowIndex].Cells["id"].Value.ToString(), out id))
                         {
                             Debug.WriteLine("Usun klienta");
@@ -266,7 +300,26 @@ namespace PorajTest
                 }
                 if (tblMode.tableName.Equals("kursy"))
                 {
-
+                    float cena;
+                    string nazwa = senderGrid.Rows[e.RowIndex].Cells["nazwa"].Value.ToString();
+                    if (!string.IsNullOrEmpty(nazwa) && float.TryParse(senderGrid.Rows[e.RowIndex].Cells["cena"].Value.ToString(), out cena))
+                    {
+                        DataGridViewButtonColumn btnCol = senderGrid.Columns[e.ColumnIndex] as DataGridViewButtonColumn;
+                        if (btnCol.Text.Equals("Zapisz"))
+                        {
+                            Debug.WriteLine("Dodaj kurs");
+                            int id = int.Parse(senderGrid.Rows[e.RowIndex].Cells["id"].Value.ToString());
+                            Utils.DodajKurs(nazwa, cena);
+                            RefreshKlientGridView(tblMode.tableName);
+                        }
+                        else if (btnCol.Text.Equals("Usuń")) //&& int.TryParse(senderGrid.Rows[e.RowIndex].Cells["id"].Value.ToString(), out id))
+                        {
+                            Debug.WriteLine("Usun klienta");
+                            int id = int.Parse(senderGrid.Rows[e.RowIndex].Cells["id"].Value.ToString());
+                            Utils.UsunKurs(id);
+                            RefreshKlientGridView(tblMode.tableName);
+                        }
+                    }
                 }
                 if (tblMode.tableName.Equals("klienci_kursy"))
                 {

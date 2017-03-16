@@ -61,6 +61,47 @@ namespace PorajTest
             }
         }
 
+        public static void DodajKurs(string nazwa, float cena)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(Utils.conncection_string);
+                conn.Open();
+                MySqlCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "INSERT INTO kursy(nazwa, cena) VALUES(@nazwa, @cena) ON DUPLICATE KEY UPDATE nazwa = @nazwa, cena = @cena;";
+                cmd.Parameters.AddWithValue("@nazwa", nazwa);
+                cmd.Parameters.AddWithValue("@cena", cena);
+
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                //mainForm.RefreshKlientGridView("kursy");
+                //this.Close();
+            }
+            catch (MySqlException e)
+            {
+                Debug.WriteLine(e.ToString());
+            }
+        }
+
+        public static void UsunKurs(int id)//(int id)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(Utils.conncection_string);
+                conn.Open();
+                MySqlCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "DELETE FROM kursy WHERE id = @id;";
+                cmd.Parameters.AddWithValue("@id", id);
+
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+            catch (MySqlException e)
+            {
+                Debug.WriteLine(e.ToString());
+            }
+        }
+
         public static void AddButtonToDataGridView(string colName, string btnText, int width, ref DataGridView dataGridView)
         {
             DataGridViewButtonColumn btnColumn = new DataGridViewButtonColumn();
