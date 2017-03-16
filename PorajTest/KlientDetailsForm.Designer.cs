@@ -51,11 +51,12 @@
             this.dataGridViewKlientKursy.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewKlientKursy.Location = new System.Drawing.Point(12, 81);
             this.dataGridViewKlientKursy.Name = "dataGridViewKlientKursy";
-            this.dataGridViewKlientKursy.Size = new System.Drawing.Size(1161, 150);
+            this.dataGridViewKlientKursy.Size = new System.Drawing.Size(1239, 178);
             this.dataGridViewKlientKursy.TabIndex = 1;
             this.dataGridViewKlientKursy.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridViewKlientKursy_CellBeginEdit);
             this.dataGridViewKlientKursy.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewKlientKursy_CellContentClick);
             this.dataGridViewKlientKursy.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewKlientKursy_CellEndEdit);
+            this.dataGridViewKlientKursy.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridViewKlientKursy_CellFormatting);
             this.dataGridViewKlientKursy.DefaultValuesNeeded += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataGridViewKlientKursy_DefaultValuesNeeded);
             // 
             // buttonDodajKurs
@@ -71,7 +72,7 @@
             // pictureBoxEan
             // 
             this.pictureBoxEan.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxEan.Image")));
-            this.pictureBoxEan.Location = new System.Drawing.Point(1031, 12);
+            this.pictureBoxEan.Location = new System.Drawing.Point(1097, 12);
             this.pictureBoxEan.Name = "pictureBoxEan";
             this.pictureBoxEan.Size = new System.Drawing.Size(142, 63);
             this.pictureBoxEan.TabIndex = 3;
@@ -81,7 +82,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1185, 332);
+            this.ClientSize = new System.Drawing.Size(1263, 360);
             this.Controls.Add(this.pictureBoxEan);
             this.Controls.Add(this.buttonDodajKurs);
             this.Controls.Add(this.dataGridViewKlientKursy);

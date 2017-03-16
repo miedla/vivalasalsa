@@ -55,6 +55,15 @@ namespace PorajTest
             SetDatePicker(ref dtpKonc);
 
             dataGridViewKlientKursy.AllowUserToAddRows = false;
+
+            //for(int i=0; i<dataGridViewKlientKursy.Rows.Count; i++)
+            //{
+            //    CheckExpire(DateTime.Parse(dataGridViewKlientKursy.Rows[i].Cells["Koniec karnetu"].Value.ToString()), i);
+            //}
+            //foreach (DataGridViewRow row in dataGridViewKlientKursy.Rows)
+            //{
+            //    CheckExpire(DateTime.Parse(row.Cells["Koniec karnetu"].Value.ToString()), row.Index);
+            //}
             Debug.WriteLine("gridview column count: "+dataGridViewKlientKursy.Columns.Count);
         }
 
@@ -357,5 +366,46 @@ namespace PorajTest
             e.Row.Cells["Telefon"].Value = telefon;
         }
 
+        private void CheckExpire(DateTime koncDate, int ilosc_wejsc, DataGridViewRow rowIdx)
+        {
+            int result = DateTime.Compare(koncDate, DateTime.Now);
+            if(result < 0)
+            {
+                Debug.WriteLine("koncDate is earlier, row idx: "+rowIdx);
+                //dataGridViewKlientKursy.Rows[rowIdx].DefaultCellStyle.BackColor = Color.Red;
+                rowIdx.DefaultCellStyle.BackColor = Color.Red;
+            }
+            else if(result == 0)
+            {
+                Debug.WriteLine("koncDate is the same as now");
+                //rowIdx.DefaultCellStyle.BackColor = Color.White;
+            }
+            else
+            {
+                Debug.WriteLine("koncDate is Later!");
+                //rowIdx.DefaultCellStyle.BackColor = Color.White;
+            }
+
+            if(ilosc_wejsc <= 0)
+            {
+                rowIdx.DefaultCellStyle.BackColor = Color.Red;
+            }else
+            {
+                //rowIdx.DefaultCellStyle.BackColor = Color.White;
+            }
+        }
+
+        private void dataGridViewKlientKursy_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            DataGridViewRow row = dataGridViewKlientKursy.Rows[e.RowIndex];
+            //row.DefaultCellStyle.BackColor = Color.Red;
+            try
+            {
+                CheckExpire(DateTime.Parse(row.Cells["Koniec karnetu"].Value.ToString()), int.Parse(row.Cells["Ilość wejść"].Value.ToString()),row);
+            }catch(Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
+        }
     }
 }
