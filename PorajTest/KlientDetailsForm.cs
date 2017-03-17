@@ -12,6 +12,20 @@ using System.Diagnostics;
 
 namespace PorajTest
 {
+    public struct Kurs
+    {
+        public int id;
+        public string nazwa;
+        public float cena;
+
+        public Kurs(int id, string nazwa, float cena)
+        {
+            this.id = id;
+            this.nazwa = nazwa;
+            this.cena = cena;
+        }
+    }
+
     public partial class KlientDetailsForm : Form
     {
         private int id;
@@ -25,7 +39,8 @@ namespace PorajTest
         private DateTimePicker dtpRozp;
         private DateTimePicker dtpKonc;
         private int[] dateColumns = { 9, 10 };//{ 10, 11 };
-        private Dictionary<int, string> kursyNazwaDict;
+        private int kursColumnIdx = 6;
+        private List<Kurs> kursyNazwaDict;//Dictionary<int, string> kursyNazwaDict;
 
         DataGridViewComboBoxColumn comboBoxColumnKursyNazwa;
         DataGridViewComboBoxColumn comboBoxColumnDniTygodnia;
@@ -91,8 +106,16 @@ namespace PorajTest
                 comboBoxColumn.Name = "Grupa";
                 comboBoxColumn.DataPropertyName = "Grupa";
 
-                kursyNazwaDict = ds.Tables[0].AsEnumerable().Select(r => r).ToDictionary(r=>r.Field<int>("id"), r=>r.Field<string>("nazwa"));
-                Debug.WriteLine("kursyNazwDict: "+ kursyNazwaDict.FirstOrDefault(x=> x.Value=="Zumba").Key);
+                kursyNazwaDict = ds.Tables[0].AsEnumerable().Select(k => new Kurs
+                {
+                    id = k.Field<int>("id"),
+                    nazwa = k.Field<string>("nazwa"),
+                    cena = k.Field<float>("cena")
+                })
+                .ToList();
+                //kursyNazwaDict = ds.Tables[0].AsEnumerable().Select(r => r).ToDictionary(r=>r.Field<int>("id"), new Kurs { nazwa = r => r.Field<string>("nazwa")});
+                //Debug.WriteLine("kursyNazwDict: "+ kursyNazwaDict.FirstOrDefault(x=> x.Value=="Zumba").Key);
+                Debug.WriteLine("kursyNazwDict: " + kursyNazwaDict.FirstOrDefault(k => k.nazwa == "Zumba").cena);
             }
 
             return comboBoxColumn;
@@ -312,7 +335,8 @@ namespace PorajTest
                     && int.TryParse(senderGrid.Rows[e.RowIndex].Cells["Ilość wejść"].Value.ToString(), out ilosc_wejsc) && float.TryParse(senderGrid.Rows[e.RowIndex].Cells["Cena"].Value.ToString(), out cena)
                     && DateTime.TryParse(senderGrid.Rows[e.RowIndex].Cells["Początek karnetu"].Value.ToString(), out poczatekKarnetu) && DateTime.TryParse(senderGrid.Rows[e.RowIndex].Cells["Koniec karnetu"].Value.ToString(), out koniecKarnetu))
                 {
-                    int kursId = kursyNazwaDict.FirstOrDefault(x => x.Value == senderGrid.Rows[e.RowIndex].Cells["Grupa"].Value.ToString()).Key;
+                    //int kursId = kursyNazwaDict.FirstOrDefault(x => x.Value == senderGrid.Rows[e.RowIndex].Cells["Grupa"].Value.ToString()).Key;
+                    int kursId = kursyNazwaDict.FirstOrDefault(k => k.nazwa == senderGrid.Rows[e.RowIndex].Cells["Grupa"].Value.ToString()).id;
                     string dzien = senderGrid.Rows[e.RowIndex].Cells["Dzień Tygodnia"].Value.ToString();
 
                     Debug.WriteLine("konieckarn: "+ koniecKarnetu);
@@ -342,12 +366,16 @@ namespace PorajTest
             // Create an instance of the Ean13 Class.        
             Ean13 upc = new Ean13();
 
-            upc.CountryCode = "590";//"12";
-            upc.ManufacturerCode = "34567";//"34567";
-            upc.ProductCode = eanProductCode;//"0001";//"89012";
+            upc.CountryCode = Utils.eanCountryCode;//"12";
+            upc.ManufacturerCode = Utils.eanManuCode;//"34567";
+            upc.ProductCode = ean.Substring(eanProductCode.Length - 5, 4);//eanProductCode;//"0001";//"89012";
             upc.Scale = 1.5f;//(float)Convert.ToDecimal(cboScale.Items[cboScale.SelectedIndex]);
 
             upc.DrawEan13Barcode(g, new Point(0, 0));
+
+            Debug.WriteLine("upc name: "+upc.ChecksumDigit);
+
+            labelEan.Text = upc.CountryCode + " " + upc.ManufacturerCode + " " + upc.ProductCode + " " + upc.ChecksumDigit;
 
             pictureBoxEan.BackColor = Color.White;
             g.Dispose();
@@ -405,6 +433,38 @@ namespace PorajTest
             }catch(Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
+            }
+        }
+
+        private void dataGridViewKlientKursy_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            Debug.WriteLine("dataGridViewKlientKursy_EditingControlShowing()");
+            if (e.Control is ComboBox)
+            {
+                ComboBox comboBox = e.Control as ComboBox;
+                comboBox.SelectedIndexChanged -= KursComboSelectionChanged;
+                if (dataGridViewKlientKursy.CurrentCell.ColumnIndex == kursColumnIdx)
+                {
+                    Debug.WriteLine("dataGridViewKlientKursy.CurrentCell.ColumnIndex == kursColumnIdx && e.Control is ComboBox");
+                    //ComboBox comboBox = e.Control as ComboBox;
+                    comboBox.SelectedIndexChanged += KursComboSelectionChanged;
+                }
+            }
+        }
+
+        private void KursComboSelectionChanged(object sender, EventArgs e)
+        {
+            var currentcell = dataGridViewKlientKursy.CurrentCellAddress;
+            var sendingCB = sender as DataGridViewComboBoxEditingControl;
+            string kurs = sendingCB.EditingControlFormattedValue.ToString();
+            float cena = kursyNazwaDict.FirstOrDefault(k => k.nazwa == kurs).cena;
+            if (cena != 0) { 
+                
+                Debug.WriteLine("sendingCB: " + sendingCB.Name);
+                Debug.WriteLine("kurs: " + kurs);
+                Debug.WriteLine("kursyNazwaDict.FirstOrDefault(k => k.nazwa == dataGridViewKlientKursy.Rows[currentcell.Y].Cells[\"Grupa\"].Value.ToString()).cena: " + kursyNazwaDict.FirstOrDefault(k => k.nazwa == dataGridViewKlientKursy.Rows[currentcell.Y].Cells["Grupa"].Value.ToString()).cena);
+                
+                dataGridViewKlientKursy.Rows[currentcell.Y].Cells["cena"].Value = cena;
             }
         }
     }

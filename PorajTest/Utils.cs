@@ -12,6 +12,8 @@ namespace PorajTest
     public static class Utils
     {
         public static string conncection_string = "Server=sql.poraj.nazwa.pl; Database=poraj_29; Uid=poraj_29; Pwd=7Dfwn^#@sdh#@32; CharSet=utf8";
+        public static string eanCountryCode = "12";
+        public static string eanManuCode = "34567";
 
         public static void DodajKlienta(string ean, string imie, string nazwisko, string email, string telefon)
         {

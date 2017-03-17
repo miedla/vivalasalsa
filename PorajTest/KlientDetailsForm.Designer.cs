@@ -33,6 +33,7 @@
             this.dataGridViewKlientKursy = new System.Windows.Forms.DataGridView();
             this.buttonDodajKurs = new System.Windows.Forms.Button();
             this.pictureBoxEan = new System.Windows.Forms.PictureBox();
+            this.labelEan = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKlientKursy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEan)).BeginInit();
             this.SuspendLayout();
@@ -49,7 +50,7 @@
             // dataGridViewKlientKursy
             // 
             this.dataGridViewKlientKursy.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewKlientKursy.Location = new System.Drawing.Point(12, 81);
+            this.dataGridViewKlientKursy.Location = new System.Drawing.Point(12, 98);
             this.dataGridViewKlientKursy.Name = "dataGridViewKlientKursy";
             this.dataGridViewKlientKursy.Size = new System.Drawing.Size(1239, 178);
             this.dataGridViewKlientKursy.TabIndex = 1;
@@ -58,6 +59,7 @@
             this.dataGridViewKlientKursy.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewKlientKursy_CellEndEdit);
             this.dataGridViewKlientKursy.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridViewKlientKursy_CellFormatting);
             this.dataGridViewKlientKursy.DefaultValuesNeeded += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataGridViewKlientKursy_DefaultValuesNeeded);
+            this.dataGridViewKlientKursy.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dataGridViewKlientKursy_EditingControlShowing);
             // 
             // buttonDodajKurs
             // 
@@ -78,11 +80,21 @@
             this.pictureBoxEan.TabIndex = 3;
             this.pictureBoxEan.TabStop = false;
             // 
+            // labelEan
+            // 
+            this.labelEan.AutoSize = true;
+            this.labelEan.Location = new System.Drawing.Point(1135, 82);
+            this.labelEan.Name = "labelEan";
+            this.labelEan.Size = new System.Drawing.Size(35, 13);
+            this.labelEan.TabIndex = 4;
+            this.labelEan.Text = "label1";
+            // 
             // KlientDetailsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1263, 360);
+            this.Controls.Add(this.labelEan);
             this.Controls.Add(this.pictureBoxEan);
             this.Controls.Add(this.buttonDodajKurs);
             this.Controls.Add(this.dataGridViewKlientKursy);
@@ -103,5 +115,6 @@
         private System.Windows.Forms.DataGridView dataGridViewKlientKursy;
         private System.Windows.Forms.Button buttonDodajKurs;
         private System.Windows.Forms.PictureBox pictureBoxEan;
+        private System.Windows.Forms.Label labelEan;
     }
 }

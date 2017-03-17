@@ -273,7 +273,13 @@ namespace PorajTest
                         string ean = senderGrid.Rows[e.RowIndex].Cells["ean"].Value.ToString();
                         if (string.IsNullOrEmpty(ean))
                         {
-                            ean = (senderGrid.Rows.Count-1).ToString().PadLeft(4, '0');
+                            string eanCountryCode = Utils.eanCountryCode;
+                            string eanManuCode = Utils.eanManuCode;
+                            string eanProductCode = (senderGrid.Rows.Count - 1).ToString().PadLeft(4, '0');//(4, '0');
+
+                            Ean13 ean13 = new Ean13(eanCountryCode, eanManuCode, eanProductCode);
+                            ean = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
+
                             Debug.WriteLine("ean: "+ean);
                         }
 
@@ -326,6 +332,28 @@ namespace PorajTest
 
                 }
             }
+        }
+
+        private void textBoxEan_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string ean = textBoxEan.Text;
+                string eanProductCode = ean.Substring(ean.Length - 5, 4);
+                Debug.WriteLine("eanProductCode: " + eanProductCode);
+                DataGridViewRow row = dataGridViewKlienci.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["ean"].Value.ToString().Equals(ean)).FirstOrDefault();
+                Debug.WriteLine("search row: " + row);
+                dataGridViewKlienci.ClearSelection();
+
+                if (row != null)
+                {
+                    row.Selected = true;
+                }
+            }catch(Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
+           
         }
     }
 }
