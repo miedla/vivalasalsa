@@ -41,7 +41,7 @@ namespace PorajTest
         private int[] dateColumns = { 9, 10 };//{ 10, 11 };
         private int kursColumnIdx = 6;
         private List<Kurs> kursyNazwaDict;//Dictionary<int, string> kursyNazwaDict;
-
+        private Ean13 ean13 = null;
         DataGridViewComboBoxColumn comboBoxColumnKursyNazwa;
         DataGridViewComboBoxColumn comboBoxColumnDniTygodnia;
         public KlientDetailsForm(int id, string imie, string nazwisko, string email, string telefon, string ean)
@@ -357,30 +357,44 @@ namespace PorajTest
 
         private void DrawEan13(string eanProductCode)
         {
-            Graphics g = pictureBoxEan.CreateGraphics();
+            // Graphics g = pictureBoxEan.CreateGraphics();
+            //
+            // g.FillRectangle(
+            //      new SolidBrush(SystemColors.Control),
+            //      new Rectangle(0, 0, pictureBoxEan.Width, pictureBoxEan.Height));
+            //
+            // // Create an instance of the Ean13 Class.        
+            // Ean13 upc = new Ean13();
+            //
+            // upc.CountryCode = Utils.eanCountryCode;//"12";
+            // upc.ManufacturerCode = Utils.eanManuCode;//"34567";
+            // upc.ProductCode = "00001";//ean.Substring(eanProductCode.Length - 5, 4);//eanProductCode;//"0001";//"89012";
+            // upc.Scale = 1f;//(float)Convert.ToDecimal(cboScale.Items[cboScale.SelectedIndex]);
+            //
+            // upc.DrawEan13Barcode(g, new Point(0, 0));
+            //
+            // Debug.WriteLine("upc name: "+upc.ChecksumDigit);
+            //
+            // labelEan.Text = upc.CountryCode + " " + upc.ManufacturerCode + " " + upc.ProductCode + " " + upc.ChecksumDigit;
+            //
+            // pictureBoxEan.BackColor = Color.White;
+            // g.Dispose();
+            CreateEan13(ean.Substring(eanProductCode.Length - 6, 5));
+            ean13.Scale = 1.5f;
 
-            g.FillRectangle(
-                 new SolidBrush(SystemColors.Control),
-                 new Rectangle(0, 0, pictureBoxEan.Width, pictureBoxEan.Height));
-
-            // Create an instance of the Ean13 Class.        
-            Ean13 upc = new Ean13();
-
-            upc.CountryCode = Utils.eanCountryCode;//"12";
-            upc.ManufacturerCode = Utils.eanManuCode;//"34567";
-            upc.ProductCode = ean.Substring(eanProductCode.Length - 5, 4);//eanProductCode;//"0001";//"89012";
-            upc.Scale = 1.5f;//(float)Convert.ToDecimal(cboScale.Items[cboScale.SelectedIndex]);
-
-            upc.DrawEan13Barcode(g, new Point(0, 0));
-
-            Debug.WriteLine("upc name: "+upc.ChecksumDigit);
-
-            labelEan.Text = upc.CountryCode + " " + upc.ManufacturerCode + " " + upc.ProductCode + " " + upc.ChecksumDigit;
-
-            pictureBoxEan.BackColor = Color.White;
-            g.Dispose();
+            System.Drawing.Bitmap bmp = ean13.CreateBitmap();
+            pictureBoxEan.Image = bmp;
         }
+        private void CreateEan13(string productCode)
+        {
+            ean13 = new Ean13();
+            ean13.CountryCode = Utils.eanCountryCode;
+            ean13.ManufacturerCode =Utils.eanManuCode;
+            ean13.ProductCode = productCode;
 
+            Debug.WriteLine("ean13.checksum " + ean13.ChecksumDigit );
+            //ean13.ChecksumDigit ="8";
+        }
         private void KlientDetailsForm_Paint(object sender, PaintEventArgs e)
         {
             DrawEan13(ean);

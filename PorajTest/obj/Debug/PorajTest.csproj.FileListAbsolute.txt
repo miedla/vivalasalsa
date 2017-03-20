@@ -11,3 +11,16 @@ D:\Visual Studio Projects\PorajTest\PorajTest\obj\Debug\PorajTest.pdb
 D:\Visual Studio Projects\PorajTest\PorajTest\obj\Debug\PorajTest.DodajKlientaForm.resources
 D:\Visual Studio Projects\PorajTest\PorajTest\obj\Debug\PorajTest.DodajKursForm.resources
 D:\Visual Studio Projects\PorajTest\PorajTest\obj\Debug\PorajTest.KlientDetailsForm.resources
+C:\Users\Krystian\Desktop\vivalasalsa-master\PorajTest\bin\Debug\PorajTest.exe.config
+C:\Users\Krystian\Desktop\vivalasalsa-master\PorajTest\obj\Debug\PorajTest.exe
+C:\Users\Krystian\Desktop\vivalasalsa-master\PorajTest\obj\Debug\PorajTest.pdb
+C:\Users\Krystian\Desktop\vivalasalsa-master\PorajTest\bin\Debug\PorajTest.exe
+C:\Users\Krystian\Desktop\vivalasalsa-master\PorajTest\bin\Debug\PorajTest.pdb
+C:\Users\Krystian\Desktop\vivalasalsa-master\PorajTest\bin\Debug\MySql.Data.dll
+C:\Users\Krystian\Desktop\vivalasalsa-master\PorajTest\obj\Debug\PorajTest.csprojResolveAssemblyReference.cache
+C:\Users\Krystian\Desktop\vivalasalsa-master\PorajTest\obj\Debug\PorajTest.DodajKlientaForm.resources
+C:\Users\Krystian\Desktop\vivalasalsa-master\PorajTest\obj\Debug\PorajTest.DodajKursForm.resources
+C:\Users\Krystian\Desktop\vivalasalsa-master\PorajTest\obj\Debug\PorajTest.Form1.resources
+C:\Users\Krystian\Desktop\vivalasalsa-master\PorajTest\obj\Debug\PorajTest.KlientDetailsForm.resources
+C:\Users\Krystian\Desktop\vivalasalsa-master\PorajTest\obj\Debug\PorajTest.Properties.Resources.resources
+C:\Users\Krystian\Desktop\vivalasalsa-master\PorajTest\obj\Debug\PorajTest.csproj.GenerateResource.Cache

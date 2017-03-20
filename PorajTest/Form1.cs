@@ -275,7 +275,7 @@ namespace PorajTest
                         {
                             string eanCountryCode = Utils.eanCountryCode;
                             string eanManuCode = Utils.eanManuCode;
-                            string eanProductCode = (senderGrid.Rows.Count - 1).ToString().PadLeft(4, '0');//(4, '0');
+                            string eanProductCode = (senderGrid.Rows.Count - 1).ToString().PadLeft(5, '0');//(4, '0');
 
                             Ean13 ean13 = new Ean13(eanCountryCode, eanManuCode, eanProductCode);
                             ean = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
@@ -348,6 +348,7 @@ namespace PorajTest
                 if (row != null)
                 {
                     row.Selected = true;
+                    dataGridViewKlienci.FirstDisplayedScrollingRowIndex = dataGridViewKlienci.SelectedRows[0].Index;
                 }
             }catch(Exception ex)
             {

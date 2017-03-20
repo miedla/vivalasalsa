@@ -41,18 +41,20 @@
             // labelKlient
             // 
             this.labelKlient.AutoSize = true;
-            this.labelKlient.Location = new System.Drawing.Point(12, 20);
+            this.labelKlient.Location = new System.Drawing.Point(16, 25);
+            this.labelKlient.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelKlient.Name = "labelKlient";
-            this.labelKlient.Size = new System.Drawing.Size(35, 13);
+            this.labelKlient.Size = new System.Drawing.Size(46, 17);
             this.labelKlient.TabIndex = 0;
             this.labelKlient.Text = "label1";
             // 
             // dataGridViewKlientKursy
             // 
             this.dataGridViewKlientKursy.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewKlientKursy.Location = new System.Drawing.Point(12, 98);
+            this.dataGridViewKlientKursy.Location = new System.Drawing.Point(16, 121);
+            this.dataGridViewKlientKursy.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dataGridViewKlientKursy.Name = "dataGridViewKlientKursy";
-            this.dataGridViewKlientKursy.Size = new System.Drawing.Size(1239, 178);
+            this.dataGridViewKlientKursy.Size = new System.Drawing.Size(1652, 219);
             this.dataGridViewKlientKursy.TabIndex = 1;
             this.dataGridViewKlientKursy.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridViewKlientKursy_CellBeginEdit);
             this.dataGridViewKlientKursy.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewKlientKursy_CellContentClick);
@@ -63,9 +65,10 @@
             // 
             // buttonDodajKurs
             // 
-            this.buttonDodajKurs.Location = new System.Drawing.Point(12, 52);
+            this.buttonDodajKurs.Location = new System.Drawing.Point(16, 64);
+            this.buttonDodajKurs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonDodajKurs.Name = "buttonDodajKurs";
-            this.buttonDodajKurs.Size = new System.Drawing.Size(75, 23);
+            this.buttonDodajKurs.Size = new System.Drawing.Size(100, 28);
             this.buttonDodajKurs.TabIndex = 2;
             this.buttonDodajKurs.Text = "Dodaj kurs";
             this.buttonDodajKurs.UseVisualStyleBackColor = true;
@@ -74,31 +77,34 @@
             // pictureBoxEan
             // 
             this.pictureBoxEan.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxEan.Image")));
-            this.pictureBoxEan.Location = new System.Drawing.Point(1097, 12);
+            this.pictureBoxEan.Location = new System.Drawing.Point(19, 372);
+            this.pictureBoxEan.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pictureBoxEan.Name = "pictureBoxEan";
-            this.pictureBoxEan.Size = new System.Drawing.Size(142, 63);
+            this.pictureBoxEan.Size = new System.Drawing.Size(360, 213);
             this.pictureBoxEan.TabIndex = 3;
             this.pictureBoxEan.TabStop = false;
             // 
             // labelEan
             // 
             this.labelEan.AutoSize = true;
-            this.labelEan.Location = new System.Drawing.Point(1135, 82);
+            this.labelEan.Location = new System.Drawing.Point(1513, 101);
+            this.labelEan.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelEan.Name = "labelEan";
-            this.labelEan.Size = new System.Drawing.Size(35, 13);
+            this.labelEan.Size = new System.Drawing.Size(46, 17);
             this.labelEan.TabIndex = 4;
             this.labelEan.Text = "label1";
             // 
             // KlientDetailsForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1263, 360);
+            this.ClientSize = new System.Drawing.Size(1684, 609);
             this.Controls.Add(this.labelEan);
             this.Controls.Add(this.pictureBoxEan);
             this.Controls.Add(this.buttonDodajKurs);
             this.Controls.Add(this.dataGridViewKlientKursy);
             this.Controls.Add(this.labelKlient);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "KlientDetailsForm";
             this.Text = "KlientDetailsForm";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.KlientDetailsForm_Paint);
