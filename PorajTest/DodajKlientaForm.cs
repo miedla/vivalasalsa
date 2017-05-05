@@ -15,10 +15,13 @@ namespace PorajTest
     public partial class DodajKlientaForm : Form
     {
         private Form1 mainForm;
+        private int eanIndex;
         public DodajKlientaForm(Form1 mainForm)
         {
             InitializeComponent();
             this.mainForm = mainForm;
+            this.eanIndex = mainForm.dataGridViewKlienci.Rows.Count + 1;
+            Debug.WriteLine("index: " + mainForm.dataGridViewKlienci.Rows.Count);
         }
 
         public static void DodajKlienta(string ean, string imie, string nazwisko, string email, string telefon)
@@ -68,13 +71,21 @@ namespace PorajTest
 
         private void buttonDodaj_Click(object sender, EventArgs e)
         {
-            //if(!string.IsNullOrEmpty(textBoxImie.Text) && !string.IsNullOrEmpty(textBoxNazwisko.Text) 
-            //    && !string.IsNullOrEmpty(textBoxEmail.Text) && !string.IsNullOrEmpty(textBoxTelefon.Text))
-            //{
-            //    DodajKlienta(textBoxImie.Text, textBoxNazwisko.Text, textBoxEmail.Text, textBoxTelefon.Text);
-            //    mainForm.RefreshKlientGridView("klienci");
-            //    this.Close();
-            //}
+            if(!string.IsNullOrEmpty(textBoxImie.Text) && !string.IsNullOrEmpty(textBoxNazwisko.Text) 
+                && !string.IsNullOrEmpty(textBoxEmail.Text) && !string.IsNullOrEmpty(textBoxTelefon.Text))
+            {
+                string eanCountryCode = Utils.eanCountryCode;
+                string eanManuCode = Utils.eanManuCode;
+                string eanProductCode = (eanIndex).ToString().PadLeft(5, '0');//(4, '0');
+
+                Ean13 ean13 = new Ean13(eanCountryCode, eanManuCode, eanProductCode);
+                string ean = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
+                Debug.WriteLine(ean);
+                DodajKlienta(ean, textBoxImie.Text, textBoxNazwisko.Text, textBoxEmail.Text, textBoxTelefon.Text);
+                mainForm.RefreshKlientGridView("klienci");
+                this.Close();
+
+            }
         }
     }
 }

@@ -179,13 +179,21 @@ namespace PorajTest
         {
             float tempWidth = (this.Width * this.Scale) * 100;
             float tempHeight = (this.Height * this.Scale) * 100;
+            try
+            {
+                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap((int)tempWidth, (int)tempHeight);
+                System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp);
+                this.DrawEan13Barcode(g, new System.Drawing.Point(0, 0));
+                g.Dispose();
+                return bmp;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
-            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap((int)tempWidth, (int)tempHeight);
 
-            System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp);
-            this.DrawEan13Barcode(g, new System.Drawing.Point(0, 0));
-            g.Dispose();
-            return bmp;
+            return null;
         }
 
 
